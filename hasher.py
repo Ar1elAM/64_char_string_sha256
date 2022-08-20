@@ -2,13 +2,14 @@ import os
 from hashlib import sha256
 
 original_string = input("What is the last string used?\n")
+order_up = True
 if original_string == "":
     original_string = ("0" * 64)
 else:
     print("Use + to go up in order or - to go down in order.")
     order = input("\nWhat order do you want to go?\n")
-    if order == "+":
-        order_up = True
+    if order == "-":
+        order_up = False
 
 # File location
 File_Name = input("\n\n\nWhat is the filename used to store the hashes?\n")
@@ -43,6 +44,9 @@ while True:
     Hashed = sha256(original_string.encode('utf-8')).hexdigest()
     Hashed_string = str(Hashed)
     File.write(original_string + (" "*5) + Hashed_string + "\n")
-    hex_string = hex(int(original_string, 16) + 1)
+    if order_up:
+        hex_string = hex(int(original_string, 16) + 1)
+    else:
+        hex_string = hex(int(original_string, 16) - 1)
     original_string = ("0" * (64 - len(hex_string[2:]))) + hex_string[2:]
     print(original_string, ":", Hashed_string)
